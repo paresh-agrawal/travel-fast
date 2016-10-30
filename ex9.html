@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Travel Safe in Delhi...!!!</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #start {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 2px;
+        border: 2px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 20px;
+        padding-left: 2px;
+      }
+	  #destination {
+        position: absolute;
+        top: 10px;
+        left: 60%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 2px;
+        border: 2px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 20px;
+        padding-left: 2px;
+      }
+	  #floating-but
+	  {
+		position: absolute;
+        top: 10px;
+        left: 80%;
+        z-index: 5;
+        background-color: #999;
+        padding: 0px;
+        border: 0px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 0px;
+        padding-left: 0px;
+	  }
+    </style>
+  </head>
+  <body>
+	<div id="start">
+      <input id="begin" type="textbox" value="Delhi, India">
+    </div>
+	<div id="destination">
+	  <input id="end" type="textbox" value="Delhi, India">
+	</div>
+	<div id="floating-but">
+	<input id="submit" type="button" value="GO!">
+	</div>
+    <div id="map"></div>
+    <script>
+       function initMap() {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+		var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 28.7041, lng: 77.1025},
+		  scaleControl:true,
+		  rotateControl:true
+        });
+		  directionsDisplay.setMap(map);
+        var geocoder = new google.maps.Geocoder();
+        document.getElementById('submit').addEventListener('click', function() {
+		  calculateAndDisplayRoute(directionsService, directionsDisplay);
+        });
+      }
+		function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+          origin: document.getElementById('begin').value,
+          destination: document.getElementById('end').value,
+          travelMode:'DRIVING',
+          provideRouteAlternatives: true
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDafWH5VMLre41ExeGMBK4AY5c9cqetD7s&callback=initMap">
+    </script>
+  </body>
+</html>
